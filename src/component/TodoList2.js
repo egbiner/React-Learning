@@ -1,7 +1,8 @@
 import React,{Component} from 'react'
 import store from '../store'
-import {getChangeInputAction,getAddTodoItemAction,getDeleteItemAction} from '../store/actionCreators'
+import {getChangeInputAction,getAddTodoItemAction,getDeleteItemAction,initDataAction} from '../store/actionCreators'
 import TodoListUI from './TodoListUI'
+import axios from 'axios'
 
 
 class TodoList2 extends Component{
@@ -14,6 +15,16 @@ class TodoList2 extends Component{
         this.hanleStoreChange = this.hanleStoreChange.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         store.subscribe(this.hanleStoreChange);
+    }
+
+    componentDidMount(){
+        const api = 'https://easy-mock.com/mock/5c5a25923583f80aa06939f4/react/api';
+        axios.get(api).then((res)=>{
+            const action = initDataAction(res.data);
+            store.dispatch(action);
+        }).catch(()=>{
+
+        })
     }
 
     handleChange(e){
