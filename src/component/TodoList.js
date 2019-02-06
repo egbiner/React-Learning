@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import TodoItem from './TodoItem'
+import axios from 'axios'
 
 class TodoList extends Component{
 
@@ -9,12 +10,33 @@ class TodoList extends Component{
             inputValue:'',
             list:[]
         }
+        this.handleButton = this.handleButton.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
+
+    // componentDidMount(){
+    //     const api = 'https://easy-mock.com/mock/5c5a1d7b3583f80aa06939c7/example/api';
+    //     axios.get(api).then((res)=>{
+    //         console.log(res);
+    //         this.setState({
+    //             list:[...res.data]
+    //         })
+    //     }).catch(()=>{
+    //         alert('fail')
+    //     })
+    // }
 
     handleInputChange(e){
         this.setState({
             inputValue:e.target.value
         })
+
+        // const value = e.target.value;
+        // this.setState(()=>({
+        //         inputValue:value
+        //     })
+        // )
     }
 
     handleButton(){
@@ -33,27 +55,33 @@ class TodoList extends Component{
         })
     }
 
+    getTodoItem(){
+        return this.state.list.map((item,index) =>{
+            return(                       
+                <TodoItem 
+                    index={index}
+                    item={item} 
+                    handleDelete = {this.handleDelete}
+                 />
+            )
+        } )
+    }
+
     render(){
         return(
             <Fragment>
                 <div>
-                    <input value={this.state.inputValue} onChange={this.handleInputChange.bind(this)} />
-                    <button onClick={this.handleButton.bind(this)}>New Task</button> 
+                    <input 
+                        value={this.state.inputValue}
+                        onChange={this.handleInputChange} 
+                        ref = {(input) => {
+                            this.input = input
+                        }}
+                    />
+                    <button onClick={this.handleButton}>New Task</button> 
                 </div>
                 <div>
-                    <ul>
-                        {
-                            this.state.list.map((item,index) =>{
-                                return(                       
-                                    <TodoItem 
-                                        index={index}
-                                        item={item} 
-                                        handleDelete = {this.handleDelete.bind(this)}
-                                     />
-                                )
-                            } )
-                        }
-                    </ul>
+                    <ul>{this.getTodoItem()}</ul>
                 </div>
             </Fragment>
         )
