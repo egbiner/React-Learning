@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import store from '../store'
 import 'antd/dist/antd.css'
+import {CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM} from '../store/actionTypes'
 import {Input,Button,List } from 'antd'
 
 class TodoList2 extends Component{
@@ -8,18 +9,49 @@ class TodoList2 extends Component{
     constructor(props){
         super(props);
         this.state = store.getState();
+        this.handleChange = this.handleChange.bind(this);
+        this.handleButton = this.handleButton.bind(this);
+        this.hanleStoreChange = this.hanleStoreChange.bind(this);
+        store.subscribe(this.hanleStoreChange);
+    }
+
+    handleChange(e){
+        const action = {
+            type:CHANGE_INPUT_VALUE,
+            value:e.target.value
+        }
+        store.dispatch(action);
+    }
+
+    handleButton(){
+        const action = {
+            type:ADD_TODO_ITEM
+        }
+        store.dispatch(action);
+    }
+
+    hanleStoreChange(){
+        this.setState(store.getState());
+    }
+
+    handleDelete(index){
+        const action = {
+            type:DELETE_TODO_ITEM,
+            index:index
+        }
+        store.dispatch(action);
     }
 
     render(){
         return(
             <div style={{marginTop:'10px',marginLeft:'10px'}}>
-                <Input value={this.state.inputValue} style={{width:'300px',marginRight:'5px'}} />
-                <Button>Default</Button>
+                <Input onChange={this.handleChange} value={this.state.inputValue} style={{width:'300px',marginRight:'5px'}} />
+                <Button onClick={this.handleButton}>Default</Button>
                 <List
                     style={{width:'300px',marginTop:'10px'}}
                     bordered
                     dataSource={this.state.list}
-                    renderItem={item => (<List.Item>{item}</List.Item>)}
+                    renderItem={(item,index) => (<List.Item onClick={this.handleDelete.bind(this,index)}>{item}</List.Item>)}
                 />
             </div>
         )
