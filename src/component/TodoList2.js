@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import store from '../store'
-import {getTodoListByThunk,getChangeInputAction,getAddTodoItemAction,getDeleteItemAction,initDataAction} from '../store/actionCreators'
+import {getTodoItemBySaga,getTodoListByThunk,getChangeInputAction,getAddTodoItemAction,getDeleteItemAction,initDataAction} from '../store/actionCreators'
 import TodoListUI from './TodoListUI'
 import axios from 'axios'
 
@@ -17,8 +17,9 @@ class TodoList2 extends Component{
     }
 
     componentDidMount(){
-        const action = getTodoListByThunk();
-        store.dispatch(action);
+        // 使用Redux-thunk
+        // const action = getTodoListByThunk();
+        // store.dispatch(action);
         // 添加redux-thunk后改写
         // const api = 'https://easy-mock.com/mock/5c5a25923583f80aa06939f4/react/api';
         // axios.get(api).then((res)=>{
@@ -26,6 +27,9 @@ class TodoList2 extends Component{
         //     store.dispatch(action);
         // }).catch(()=>{
         // })
+        // 使用redux-saga
+        const action = getTodoItemBySaga();
+        store.dispatch(action);
     }
 
     handleChange(e){

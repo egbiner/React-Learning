@@ -1,4 +1,4 @@
-import {CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM,INIT_DATA} from '../store/actionTypes'
+import {GET_BY_SAGA,CHANGE_INPUT_VALUE,ADD_TODO_ITEM,DELETE_TODO_ITEM,INIT_DATA} from '../store/actionTypes'
 import axios from 'axios'
 
 export const getChangeInputAction = (value) => ({
@@ -20,6 +20,9 @@ export const initDataAction = (data) => ({
     data
 });
 
+export const getTodoItemBySaga = () => ({
+    type: GET_BY_SAGA
+})
 
 export const getTodoListByThunk = () => {
     return (dispatch) => {
